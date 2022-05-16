@@ -13,7 +13,7 @@ class StationAPI {
     );
     var body = jsonDecode(response.body);
     for (var item in body) {
-      Stations.add(Station.fromJson(item).name);
+      Stations.add(item);
     }
     return Stations.toList();
   }
