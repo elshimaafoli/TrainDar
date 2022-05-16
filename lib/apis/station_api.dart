@@ -5,8 +5,8 @@ import 'package:traindar_app/models/train/nearby_trains.dart';
 import '../uris.dart';
 
 class StationAPI {
-  List<String> Stations = <String>[];
   Future<List<String>> getStation() async {
+    List<String> Stations = [];
     var response = await http.get(
       Uri.parse(URI.getNameStations),
       headers: URI.headers,
