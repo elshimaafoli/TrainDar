@@ -2,7 +2,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 class LocationScreen extends StatefulWidget {
   @override
   State<LocationScreen> createState() => _LocationScreenState();
@@ -12,19 +11,12 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     var markers=HashSet<Marker>();
-    Location loc= Location();
+   // Location loc= Location();
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(223, 209, 162, 1),
         foregroundColor: Colors.black,
-        leading:IconButton(
-          alignment: Alignment.topLeft,
-          onPressed: () {},
-          icon: const Icon(
-            Icons.arrow_back,
-          ),
-        ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           mainAxisSize: MainAxisSize.min,
@@ -53,7 +45,7 @@ class _LocationScreenState extends State<LocationScreen> {
            onMapCreated: (GoogleMapController googleMapController){
         setState(() {
           markers.add(
-            Marker(
+           const Marker(
               markerId:MarkerId('1'),
               position:LatLng(27.178312,31.185926),
           ),

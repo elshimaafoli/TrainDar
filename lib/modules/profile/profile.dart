@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:traindar_app/modules/personal_information/personal_information.dart';
 import '../../swap.dart';
 
-_buildIcons(IconData icon) {
-  return Icon(
-    icon,
-    size: 44,
-    //rgb(87, 89, 86)
-    color: const Color.fromRGBO(87, 89, 86, 1),
-  );
-}
+// _buildIcons(IconData icon) {
+//   return Icon(
+//     icon,
+//     size: 44,
+//     //rgb(87, 89, 86)
+//     color: const Color.fromRGBO(87, 89, 86, 1),
+//   );
+// }
 
 class Profile extends StatelessWidget {
   String name = "sh";

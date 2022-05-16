@@ -5,8 +5,6 @@ import 'package:traindar_app/apis/TrainIDAPI.dart';
 import 'package:traindar_app/apis/share_location_api.dart';
 import 'package:traindar_app/shared/network/local/local_storage.dart';
 
-import '../../swap.dart';
-
 class SelectTrainID extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _state();

@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:traindar_app/apis/station_api.dart';
 import 'package:traindar_app/models/train/nearby_trains.dart';
@@ -63,6 +62,7 @@ class ListIDTrains extends StatelessWidget {
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: DataTable(
+                              border: TableBorder.all(color: Colors.brown,),
                               decoration: const BoxDecoration(
                                 color: Color.fromRGBO(208, 196, 156, 0.75),
                                 borderRadius: BorderRadius.only(
@@ -96,7 +96,7 @@ class ListIDTrains extends StatelessWidget {
 
                                 return DataRow(cells: [
                                   DataCell(MaterialButton(onPressed: (){},child:Text(x))),
-                                  DataCell(MaterialButton(onPressed: (){},child:Text(x))),
+                                  DataCell(MaterialButton(onPressed: (){},child:Text(y))),
                                 ]);
                               }),
                             ),
@@ -119,29 +119,3 @@ class ListIDTrains extends StatelessWidget {
   }
 }
 
-builditem() => TableRow(
-        decoration: const BoxDecoration(
-          color: Color.fromRGBO(208, 196, 156, 0.75),
-        ),
-        children: [
-          MaterialButton(
-            height: 30,
-            padding: const EdgeInsets.all(8.0),
-            onPressed: () {},
-            child: const Text(
-              "TrainID",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          MaterialButton(
-            height: 30,
-            padding: const EdgeInsets.all(8.0),
-            onPressed: () {},
-            child: const Text(
-              "Time",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ]);

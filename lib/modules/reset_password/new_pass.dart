@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:traindar_app/apis/return_password_api.dart';
 import 'package:traindar_app/modules/login/login.dart';
-import '../profile/profile.dart';
 import '../../swap.dart';
 
 final newpass = TextEditingController();

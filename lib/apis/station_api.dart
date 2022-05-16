@@ -28,10 +28,10 @@ class StationAPI {
           "&second-city=$station2"),
       headers: URI.headers,
     );
-    print(response.body);
+   // print(response.body);
     var body = jsonDecode(response.body);
     for (var item in body) {
-      nearbyTrains.add(NearbyTrains.fromJson(body));
+      nearbyTrains.add(NearbyTrains.fromJson(item));
     }
 
     return nearbyTrains.toList();

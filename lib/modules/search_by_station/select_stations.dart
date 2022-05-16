@@ -18,7 +18,7 @@ class _SelectStationsState extends State<SelectStations> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(223, 209, 162, 1),
-        foregroundColor: const Color.fromRGBO(90, 89, 120, 1),
+        foregroundColor: Colors.black,
         title: Row(
           children: const [
             Padding(

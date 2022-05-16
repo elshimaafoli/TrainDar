@@ -11,16 +11,6 @@ class SearchByID extends StatefulWidget {
 
 class _state extends State<SearchByID> {
   int? selectedID;
-  List<int> IDs = [];
-  void initState() {
-    super.initState();
-    _convertFutureListToList();
-  }
-
-  void _convertFutureListToList() async {
-    IDs = await TrainAPI().getID();
-  }
-
   // List<int> IDs;
   @override
   Widget build(BuildContext context) {

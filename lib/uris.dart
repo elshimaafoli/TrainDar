@@ -12,7 +12,6 @@ class URI {
 //Stations
   static String getNameStations =
       "https://train-dar.azurewebsites.net/api/v1/station/all";
-
 //User
   static String login = "https://train-dar.azurewebsites.net/api/v1/sign-in";
   static String createUser =
