@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:traindar_app/shared/network/local/local_storage.dart';
-import 'gbs.dart';
 import 'modules/login/login.dart';
-Future<void> main() async {
- // LocalStorage.init();
-  runApp( App());
-  // UserAPI().getUser();
-}
-
+void main()=>runApp(App());
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
   @override
@@ -28,5 +20,3 @@ Widget startImage = Container(
     fit: BoxFit.cover,
   ),
 ));
-
-//

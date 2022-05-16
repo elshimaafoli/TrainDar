@@ -4,7 +4,6 @@ class URI {
     "content-type": "application/json"
   };
 // trains
-//https://train-dar.azurewebsites.net/api/v1/train/view
   static String getTrainId =
       "https://train-dar.azurewebsites.net/api/v1/train/view";
   static String getTrainLocation =

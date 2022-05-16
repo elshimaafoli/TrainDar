@@ -1,6 +1,5 @@
 
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -63,51 +62,6 @@ class _LocationScreenState extends State<LocationScreen> {
            },
         markers: markers,
             ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-              color: const Color.fromRGBO(112, 112, 112, 100)),
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30)),
-        ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-          child: BottomNavigationBar(
-
-            selectedItemColor: const Color.fromRGBO(87, 89, 86, 1),
-            items: const [
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.list,
-                  ),
-                  label: ("")),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.house_rounded,
-                  ),
-                  label: ("")),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.account_circle,
-                ),
-                label: (""),
-              ),
-
-            ],
-
-            // currentIndex: _selectedIndex,
-            onTap: (int index){
-              //if(index==2)
-              // Navigator.push(context, Config.route(Profile()));
-            },
-            backgroundColor: const Color.fromRGBO(223, 209, 162, 1),
-            iconSize: 44,
-            unselectedItemColor: const Color.fromRGBO(87, 89, 86, 1),
-          ),
-        ),
-      ),
     );
   }
 }

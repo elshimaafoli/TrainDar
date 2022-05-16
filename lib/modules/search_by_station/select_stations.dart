@@ -1,11 +1,15 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:traindar_app/data/station_api.dart';
+import 'package:traindar_app/apis/station_api.dart';
+
+import '../../swap.dart';
+import 'list_id_time_trains.dart';
 
 class SelectStations extends StatefulWidget {
   @override
   State<SelectStations> createState() => _SelectStationsState();
 }
+
 //hello
 class _SelectStationsState extends State<SelectStations> {
   String? selectedValue1;
@@ -14,7 +18,7 @@ class _SelectStationsState extends State<SelectStations> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(223, 209, 162, 1),
-        foregroundColor: const Color.fromRGBO(90, 89, 100, 1),
+        foregroundColor: const Color.fromRGBO(90, 89, 120, 1),
         title: Row(
           children: const [
             Padding(
@@ -133,12 +137,48 @@ class _SelectStationsState extends State<SelectStations> {
                               ),
                             ),
                           ),
+                          const SizedBox(
+                            height: 50,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                MaterialButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        Config.route(ListIDTrains(
+                                            selectedValue1,
+                                            selectedValue2)));
+                                  },
+                                  elevation: 10,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Text(
+                                      "Search",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15),
+                                  color: const Color.fromRGBO(246, 188, 0, 1),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     );
                   } else {
                     return const Center(
-                      child:  CircularProgressIndicator(
+                      child: CircularProgressIndicator(
                         color: Colors.brown,
                       ),
                     );

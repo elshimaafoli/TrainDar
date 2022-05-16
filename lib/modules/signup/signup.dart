@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import 'package:traindar_app/data/userAPI.dart';
+import 'package:traindar_app/apis/userAPI.dart';
 import 'package:traindar_app/modules/login/login.dart';
 import '../../models/users/user.dart';
 import '../../swap.dart';

@@ -1,11 +1,10 @@
-
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:traindar_app/modules/search_by_station/select_stations.dart';
-import 'package:traindar_app/modules/search_by_trainid/messagesearch/messagesearch.dart';
+import 'package:traindar_app/modules/search_by_trainid/messagesearch.dart';
 import 'package:traindar_app/modules/share_location/select_train_id.dart';
-import 'package:traindar_app/shared/components/constants.dart';
+import 'package:traindar_app/shared/network/local/local_storage.dart';
 import '../../swap.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,8 +13,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String shareText = "Share Location";
+  @override
+  initState() {
+    super.initState();
+    if (shareText != "Stop Sharing") {
+      LocalStorage().setShareData(false);
+    }
+    LocalStorage().getShareData();
+    if (LocalStorage.check  == true) {
+      shareText = "Stop Sharing";
+   }
+  }
 
-  String shareText="Share Location";
   @override
   Widget build(BuildContext context) {
     List<DataButton> fetchButton = [
@@ -24,23 +34,20 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: Icons.location_on,
           colorIcon: Colors.red,
           function: () async {
-
-            Location location = Location();
-            PermissionStatus _permissionGranted= await location.hasPermission();
-            if(_permissionGranted==PermissionStatus.granted)
-            {
-            // SharedPreferences pref= await SharedPreferences.getInstance();
-            // bool? res=pref.getBool('isShare');
-            // if (res!) {
-            //   shareText="Stop Sharing";
-            //   await pref.setBool('isShare', false);
-            // } else {}
-              Navigator.push(context, Config.route(SelectTrainID()));
+            if(shareText=="Stop Sharing"){
+              setState(() {
+                LocalStorage().setShareData(false);
+                shareText="Share Location";
+              });
             }
-            else
-              {
-                _permissionGranted=await location.requestPermission();
-              }
+            Location location = Location();
+            PermissionStatus _permissionGranted =
+                await location.hasPermission();
+            if (_permissionGranted == PermissionStatus.granted) {
+              Navigator.push(context, Config.route(SelectTrainID()));
+            } else {
+              _permissionGranted = await location.requestPermission();
+            }
           }),
       DataButton(
           text: "Search By TrainID",
@@ -52,8 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
           text: "Search By Station",
           icon: Icons.search_rounded,
           function: () {
-
-            Navigator.push(context, Config.route(MessageSearch()));
+            Navigator.push(context, Config.route(SelectStations()));
           }),
       DataButton(
           text: "Nearest Station",

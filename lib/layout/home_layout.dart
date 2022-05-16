@@ -20,7 +20,7 @@ class _State extends State<HomeLayout> {
   List<Widget> screens =[];
   void initState() {
     super.initState();
-     screens= [SelectStations(), HomeScreen(), Profile(currentuser.name)];
+     screens= [const Text(''), HomeScreen(), Profile(currentuser.name)];
   }
   _State(this.currentuser);
 

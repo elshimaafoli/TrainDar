@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:traindar_app/data/return_password_api.dart';
+import 'package:traindar_app/apis/return_password_api.dart';
 import 'package:traindar_app/modules/reset_password/new_pass.dart';
 
 import '../../swap.dart';
