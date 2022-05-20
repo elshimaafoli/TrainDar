@@ -24,7 +24,7 @@ class _LocationScreenState extends State<LocationScreen> {
 
   final Set<Marker> _markers = {};
   final Completer<GoogleMapController> _controller = Completer();
-  late var _locationIcon;
+  //late var _locationIcon;
   @override
   void initState() {
     // TODO: implement initState
@@ -37,7 +37,6 @@ class _LocationScreenState extends State<LocationScreen> {
     final CameraPosition _pos = CameraPosition(
         target: LatLng(location_lng, location_lat), zoom: 16.4767);
     LatLng currentPosition = _pos.target;
-    var markers = HashSet<Marker>();
     // Location loc= Location();
     return Scaffold(
       appBar: AppBar(
@@ -121,7 +120,7 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 }
 
-Future<void> _BuildMarker() async {
-  BitmapDescriptor  _locationIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(48, 48)), 'images/markTrain.jpg');
-}
+// Future<void> _BuildMarker() async {
+//   BitmapDescriptor  _locationIcon = await BitmapDescriptor.fromAssetImage(
+//         ImageConfiguration(size: Size(48, 48)), 'images/markTrain.jpg');
+// }

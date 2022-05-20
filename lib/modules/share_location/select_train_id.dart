@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:traindar_app/apis/TrainIDAPI.dart';
 import 'package:traindar_app/apis/share_location_api.dart';
-import 'package:traindar_app/locationServices.dart';
 import 'package:traindar_app/modules/home/home.dart';
 import 'package:traindar_app/shared/network/local/local_storage.dart';
 
