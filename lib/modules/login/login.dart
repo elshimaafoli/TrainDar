@@ -23,7 +23,7 @@ class Login extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height / 2,
+                    height: MediaQuery.of(context).size.height*0.42,
                     child: const Image(
                       image: AssetImage("images/trackMe.jpg"),
                     ),
@@ -35,7 +35,7 @@ class Login extends StatelessWidget {
                             topLeft: corner, topRight: corner),
                         color: const Color.fromRGBO(239, 231, 206, 100)),
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height / 2,
+                    height: MediaQuery.of(context).size.height*0.55,
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -164,7 +164,7 @@ class Login extends StatelessWidget {
                                   child: const Text(
                                     "Forgot Password?",
                                     style: TextStyle(
-                                      fontSize: 17,
+                                      fontSize: 20,
                                       color: Colors.black45,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Railway',
@@ -299,36 +299,23 @@ class Login extends StatelessWidget {
                             ),
                           ),
 // i dont have account
-                          const Text("I don't have account",
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(context, Config.route(SignUp()));
+                            },
+                            child: const Text(
+                              "You don't have an account ?",
                               style: TextStyle(
-                                  fontSize: 20, color: Colors.black45)),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context, Config.route(SignUp()));
-                                  },
-                                  child: const Text(
-                                    "Create Account?",
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      color: Colors.black45,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Railway',
-                                    ),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                    minimumSize: Size.zero,
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                ),
+                                fontSize: 20,
+                                color: Colors.black45,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Railway',
                               ),
-                            ],
+                            ),
                           ),
+                          const SizedBox(
+                            height: 10,
+                          )
                         ]),
                   ),
                 ],

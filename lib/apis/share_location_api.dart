@@ -4,9 +4,8 @@ import 'package:traindar_app/apis/userAPI.dart';
 import '../uris.dart';
 
 class ShareAPI {
-  int userId=UserAPI.currentUserId;
-  Future<bool> shareIdFirstTime(
-      {required int trainId}) async {
+  int userId = UserAPI.currentUserId;
+  Future<bool> shareIdFirstTime({required int trainId}) async {
     print(trainId);
     print(userId);
     var response = await http.put(
@@ -28,14 +27,23 @@ class ShareAPI {
     var response = await http.put(
       Uri.parse(
           "https://train-dar.azurewebsites.net/api/v1/user/$userId/update-location"),
-      body:
-        jsonEncode(<String, dynamic>{
-          "locationLng" : locationLng.toString(),
-          "locationLat" : locationLat.toString(),
-        }),
+      body: jsonEncode(<String, dynamic>{
+        "locationLng": locationLng.toString(),
+        "locationLat": locationLat.toString(),
+      }),
       headers: URI.headers,
     );
     print(response.body);
     return true;
+  }
+
+  Future<void> deleteShare({required int trainId}) async {
+    var response = await http.delete(
+      Uri.parse(
+          "https://train-dar.azurewebsites.net/api/v1/train/delete-user?"
+              "train-id=$trainId&user-id=$userId"),
+      headers: URI.headers
+    );
+    print(response.body);
   }
 }

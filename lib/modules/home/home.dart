@@ -1,12 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:traindar_app/apis/share_location_api.dart';
 import 'package:traindar_app/modules/search_by_station/select_stations.dart';
 import 'package:traindar_app/modules/search_by_trainid/messagesearch.dart';
 import 'package:traindar_app/modules/share_location/select_train_id.dart';
 import 'package:traindar_app/shared/network/local/local_storage.dart';
 import '../../swap.dart';
-
 class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -25,7 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
       shareText = "Stop Sharing";
    }
   }
-
   @override
   Widget build(BuildContext context) {
     List<DataButton> fetchButton = [
@@ -38,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
               setState(() {
                 LocalStorage().setShareData(false);
                 shareText="Share Location";
+                //ShareAPI().deleteShare(trainId:  );
               });
             }
             Location location = Location();

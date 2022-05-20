@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:traindar_app/models/station/station.dart';
 import 'package:traindar_app/models/train/nearby_trains.dart';
 import '../uris.dart';
 

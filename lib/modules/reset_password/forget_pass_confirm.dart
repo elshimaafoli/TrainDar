@@ -12,7 +12,6 @@ class ForgetPassConfirm extends StatelessWidget {
   var keyForm = GlobalKey<FormState>();
   Widget build(BuildContext context) {
     return Scaffold(
-      //rgb(223, 209, 162)
       backgroundColor: const Color.fromRGBO(223, 209, 162, 1),
       body: SafeArea(
         child: SingleChildScrollView(

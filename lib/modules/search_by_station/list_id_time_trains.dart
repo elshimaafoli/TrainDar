@@ -1,7 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:traindar_app/apis/TrainIDAPI.dart';
 import 'package:traindar_app/apis/station_api.dart';
 import 'package:traindar_app/models/train/nearby_trains.dart';
+import 'package:traindar_app/models/train/train.dart';
+
+import '../../LocationScreen.dart';
+import '../../swap.dart';
 
 class ListIDTrains extends StatelessWidget {
   String? station1 = "default";
@@ -42,6 +47,7 @@ class ListIDTrains extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
+        height: MediaQuery.of(context).size.height,
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
           child: Container(
@@ -52,57 +58,76 @@ class ListIDTrains extends StatelessWidget {
                 builder: (BuildContext context,
                     AsyncSnapshot<List<NearbyTrains>> snapshot) {
                   if (snapshot.hasData) {
-                    for (var item in snapshot.data!) {
-                      print(item.trainId);
-                    }
                     return Center(
-                      child: Column(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-                              border: TableBorder.all(color: Colors.brown,),
-                              decoration: const BoxDecoration(
-                                color: Color.fromRGBO(208, 196, 156, 0.75),
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  topLeft: Radius.circular(20),
-                                ),
+                      child:Container(
+                        alignment: Alignment.topCenter,
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child:SingleChildScrollView(
+                          child: DataTable(
+                            border: TableBorder.all(
+                              color: Colors.brown,
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                topLeft: Radius.circular(20),
                               ),
-                              columns: const [
-                                DataColumn(
-                                    label: Text(
-                                  'TrainID',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center,
-                                )),
-                                DataColumn(
-                                    label: Text(
-                                  'Remaining Time',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center,
-                                )),
-                              ],
-                              rows:
-                                  List.generate(snapshot.data!.length, (index) {
-                                final x =
-                                    snapshot.data![index].trainId.toString();
-                                final y = snapshot.data![index].timeLeft;
-
-                                return DataRow(cells: [
-                                  DataCell(MaterialButton(onPressed: (){},child:Text(x))),
-                                  DataCell(MaterialButton(onPressed: (){},child:Text(y))),
-                                ]);
-                              }),
                             ),
+                            decoration: const BoxDecoration(
+                              color: Color.fromRGBO(208, 196, 156, 0.75),
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                topLeft: Radius.circular(20),
+                              ),
+                            ),
+                            columns: const [
+                              DataColumn(
+                                  label: Text(
+                                'TrainID',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              )),
+                              DataColumn(
+                                  label: Text(
+                                'Remaining Time',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              )),
+                            ],
+                            rows:
+                                List.generate(snapshot.data!.length, (index) {
+                              final trainId = snapshot.data![index].trainId;
+                              final time = snapshot.data![index].timeLeft;
+                              return DataRow(cells: [
+                                DataCell(MaterialButton(
+                                    onPressed: () async {
+                                      TrainModel train = await TrainAPI()
+                                          .getLoaction(trainId);
+                                      Navigator.push(
+                                          context,
+                                          Config.route(LocationScreen(
+                                              train.locationLat,
+                                              train.locationLng)));
+                                    },
+                                    child: Text(trainId.toString()))),
+                                DataCell(MaterialButton(
+                                    onPressed: () async {
+                                      TrainModel train = await TrainAPI()
+                                          .getLoaction(trainId);
+                                      Navigator.push(
+                                          context,
+                                          Config.route(LocationScreen(
+                                              train.locationLat,
+                                              train.locationLng)));
+                                    },
+                                    child: Text(time))),
+                              ]);
+                            }),
                           ),
                         ),
-                      ]),
+                      ),
                     );
                   } else {
                     return const Center(
@@ -118,4 +143,3 @@ class ListIDTrains extends StatelessWidget {
     );
   }
 }
-

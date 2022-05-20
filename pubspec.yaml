@@ -36,7 +36,7 @@ dependencies:
   shared_preferences:
   location:
   google_maps_flutter: ^2.1.2
-
+  provider: ^6.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -70,6 +70,7 @@ flutter:
     - images/user.png
     - images/backgroundHome.jpg
     - images/searchCityIcon.png
+    - images/markTrain.jpg
       # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware.
 

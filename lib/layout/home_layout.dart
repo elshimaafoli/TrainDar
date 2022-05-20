@@ -15,7 +15,7 @@ class HomeLayout extends StatefulWidget {
 
 class _State extends State<HomeLayout> {
   @override
-  int currentIndex = 0;
+  int currentIndex = 1;
   User currentuser;
   List<Widget> screens =[];
   void initState() {
@@ -30,7 +30,6 @@ class _State extends State<HomeLayout> {
       backgroundColor: const Color.fromRGBO(223, 209, 164, 0.85),
       body: screens[currentIndex],
       bottomNavigationBar: Container(
-
         decoration: BoxDecoration(
           border: Border.all(color: const Color.fromRGBO(112, 112, 112, 100)),
           borderRadius: const BorderRadius.only(
@@ -40,6 +39,7 @@ class _State extends State<HomeLayout> {
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           child: BottomNavigationBar(
+
             elevation: 20,
             type: BottomNavigationBarType.fixed,
             iconSize: 35,

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:traindar_app/apis/TrainIDAPI.dart';
+import 'package:traindar_app/models/train/train.dart';
 import '../../LocationScreen.dart';
 import '../../swap.dart';
 
@@ -8,7 +9,6 @@ class SearchByID extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _state();
 }
-
 class _state extends State<SearchByID> {
   int? selectedID;
   // List<int> IDs;
@@ -119,10 +119,10 @@ class _state extends State<SearchByID> {
                                 MaterialButton(
                                   onPressed: () async {
                                     //print(selectedID);
-                                    var data = await TrainAPI()
+                                    TrainModel train = await TrainAPI()
                                         .getLoaction(selectedID as int);
                                     Navigator.push(context,
-                                        Config.route(LocationScreen()));
+                                        Config.route(LocationScreen(train.locationLat,train.locationLng)));
                                   },
                                   elevation: 10,
                                   shape: RoundedRectangleBorder(

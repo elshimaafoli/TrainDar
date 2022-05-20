@@ -89,7 +89,9 @@ class _state extends State<SignUp> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, Config.route(Login()));
+                      },
                       icon: const Icon(
                         Icons.arrow_back_rounded,
                         size: 30,
@@ -100,10 +102,10 @@ class _state extends State<SignUp> {
               ),
               Container(
                 alignment: Alignment.center,
-                decoration:  BoxDecoration(
+                decoration: BoxDecoration(
                   borderRadius:
                       const BorderRadius.only(topRight: Radius.circular(60)),
-                  border:Border.all(color: Colors.black54),
+                  border: Border.all(color: Colors.black54),
                   color: const Color.fromRGBO(239, 231, 206, 1),
                 ),
                 child: ListView(
@@ -120,7 +122,7 @@ class _state extends State<SignUp> {
                             wordSpacing: 2,
                             fontSize: 25,
                             backgroundColor: Color.fromRGBO(87, 89, 86, 0.7),
-                            color:Color.fromRGBO(239, 231, 206, 1),
+                            color: Color.fromRGBO(239, 231, 206, 1),
                           ),
                         ),
                         const Padding(
@@ -590,40 +592,23 @@ class _state extends State<SignUp> {
                           )),
                     ),
 // i already have account
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(15, 5, 15, 0),
-                      child: Center(
-                          child: Text(
-                        "I already have Account...",
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(context, Config.route(Login()));
+                      },
+                      child: const Text(
+                        "I already have an account...",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black54),
-                      )),
-                    ),
-//Login button
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(context, Config.route(Login()));
-                          },
-                          child: const Text(
-                            "Log In",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Railway',
-                            ),
-                          ),
-                          style: TextButton.styleFrom(
-                            minimumSize: Size.zero,
-                            padding: EdgeInsets.zero,
-                          ),
+                          fontSize: 20,
+                          color: Colors.black45,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Railway',
                         ),
-                      ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                   ],
                 ),

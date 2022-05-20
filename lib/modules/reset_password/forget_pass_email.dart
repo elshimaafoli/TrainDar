@@ -16,10 +16,13 @@ class ForgetPasswordEmail extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(children: [
-            const Image(
-              image: AssetImage("images/forgotPassword.jpg"),
-              //height: MediaQuery.of(context).size.height,
-            ),
+            Stack(
+              children :[
+              const Image(
+                image: AssetImage("images/forgotPassword.jpg"),
+                //height: MediaQuery.of(context).size.height,
+              ),
+          ]),
             Container(
               //design of container ..
               decoration: BoxDecoration(

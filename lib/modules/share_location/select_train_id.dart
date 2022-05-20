@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:traindar_app/apis/TrainIDAPI.dart';
 import 'package:traindar_app/apis/share_location_api.dart';
+import 'package:traindar_app/locationServices.dart';
+import 'package:traindar_app/modules/home/home.dart';
 import 'package:traindar_app/shared/network/local/local_storage.dart';
+
+import '../../swap.dart';
 
 class SelectTrainID extends StatefulWidget {
   @override
@@ -122,10 +126,10 @@ class _state extends State<SelectTrainID> {
                                     trainId: selectedID as int,
                                   );
                                   if (res) {
+                                    LocalStorage().setShareData(true);
                                     Location loc = Location();
                                     bool checkGBS = await loc.serviceEnabled();
                                     if (checkGBS) {
-                                      LocalStorage().setShareData(true);
                                       loc.enableBackgroundMode(enable: true);
                                       loc.onLocationChanged.listen(
                                           (LocationData currentLocation) {
@@ -136,9 +140,9 @@ class _state extends State<SelectTrainID> {
                                                 .longitude as double);
                                         print(currentLocation.longitude);
                                         print(currentLocation.latitude);
-                                      }
-                                      );
-                                    } else {
+                                      });
+                                    }
+                                    else {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
@@ -157,6 +161,7 @@ class _state extends State<SelectTrainID> {
                                         ),
                                       );
                                     }
+                                    Navigator.push(context, Config.route(HomeScreen()));
                                   }
                                 },
                                 elevation: 10,
