@@ -1,20 +1,22 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:traindar_app/apis/userAPI.dart';
+import 'package:traindar_app/models/station/nearest_stations.dart';
 import 'package:traindar_app/models/train/nearby_trains.dart';
 import '../uris.dart';
 
 class StationAPI {
   Future<List<String>> getStation() async {
-    List<String> Stations = [];
+    List<String> stations = [];
     var response = await http.get(
       Uri.parse(URI.getNameStations),
       headers: URI.headers,
     );
     var body = jsonDecode(response.body);
     for (var item in body) {
-      Stations.add(item);
+      stations.add(item);
     }
-    return Stations.toList();
+    return stations.toList();
   }
 
   Future<List<NearbyTrains>> getNearbyTrains(
@@ -27,12 +29,28 @@ class StationAPI {
           "&second-city=$station2"),
       headers: URI.headers,
     );
-   // print(response.body);
+    // print(response.body);
     var body = jsonDecode(response.body);
     for (var item in body) {
       nearbyTrains.add(NearbyTrains.fromJson(item));
     }
 
     return nearbyTrains.toList();
+  }
+
+  Future<List<NearestStations>> getNearestStations({required int trainId}) async {
+    List<NearestStations> nearestStations = [];
+    var response = await http.get(
+      Uri.parse(
+          "https://train-dar.azurewebsites.net/api/v1/api/v1/station/"
+              "nearest-stations?user-id=${UserAPI.currentUserId}"
+              "&train-id=$trainId"),
+      headers: URI.headers,
+    );
+    var body = jsonDecode(response.body);
+    for (var item in body) {
+      nearestStations.add(NearestStations.fromJson(item));
+    }
+    return nearestStations.toList();
   }
 }

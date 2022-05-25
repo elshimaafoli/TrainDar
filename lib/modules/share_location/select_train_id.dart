@@ -176,6 +176,7 @@ class _state extends State<SelectTrainID> {
                                     ),
                                   ),
                                 ),
+                                highlightColor: Colors.black45,
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
                                 color: const Color.fromRGBO(246, 188, 0, 1),
