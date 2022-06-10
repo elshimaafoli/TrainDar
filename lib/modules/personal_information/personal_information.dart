@@ -10,7 +10,7 @@ class PersonalInformation extends StatefulWidget {
 }
 
 class _state extends State<PersonalInformation> {
-  List<String> data = ['Name: ', 'Phone: ', 'Email address: ', 'Points: '];
+  List<String> data = ['Name: ', 'Phone: ', 'Email \naddress: ', 'Points: '];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,14 +25,14 @@ class _state extends State<PersonalInformation> {
               child: Icon(
                 Icons.account_box_rounded,
                 color: Colors.red,
-                size: 30,
+                size: 25,
               ),
             ),
             Expanded(
               child: Text(
                 "Personal Information",
                 style: TextStyle(
-                  fontSize: 26,
+                  fontSize: 20,
                 ),
                 maxLines: 2,
               ),
@@ -49,7 +49,7 @@ class _state extends State<PersonalInformation> {
                 snapshot.data!.name,
                 snapshot.data!.phone,
                 snapshot.data!.email,
-                '50'
+                snapshot.data!.points.toString(),
               ];
               return Padding(
                 padding: const EdgeInsets.only(top:20,left: 10,right: 10),
@@ -126,8 +126,9 @@ Widget buildItem(
           Text(
             firstLabel,
             maxLines: 2,
-            style: const TextStyle(
-              fontSize: 25,
+            style:  const TextStyle(
+              fontSize:18,
+              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(
@@ -138,7 +139,7 @@ Widget buildItem(
               secondLabel,
               maxLines: 2,
               style: const TextStyle(
-                fontSize: 22,
+                fontSize: 16,
               ),
             ),
           ),

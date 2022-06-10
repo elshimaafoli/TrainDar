@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:traindar_app/apis/userAPI.dart';
 import 'package:traindar_app/models/train/train.dart';
 import '../uris.dart';
 
@@ -21,12 +22,12 @@ class TrainAPI {
     return trainsID.toList();
   }
 
-  Future <TrainModel> getLoaction (int id) async {
+  Future <TrainModel> getLoaction (int train_id) async {
     final response = await http.get(
-      Uri.parse(URI.getTrainLocation+"$id"),
+      Uri.parse(URI.getTrainLocation+"user-id=${UserAPI.currentUserId}&train-id=${train_id}"),
       headers: URI.headers,
     );
-    TrainModel trainModel = TrainModel(id: id);
+    TrainModel trainModel = TrainModel(id: train_id);
     var body = json.decode(response.body);
     trainModel.locationLng=TrainModel.locationFromJson(body).locationLng;
     trainModel.locationLat=TrainModel.locationFromJson(body).locationLat;

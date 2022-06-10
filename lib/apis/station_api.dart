@@ -25,8 +25,9 @@ class StationAPI {
     var response = await http.get(
       Uri.parse(
           "https://train-dar.azurewebsites.net/api/v1/train/show-upcoming-trains?"
-          "first-city=$station1"
-          "&second-city=$station2"),
+              "user-id=${UserAPI.currentUserId}"
+              "&first-city=$station1"
+              "&second-city=$station2"),
       headers: URI.headers,
     );
     // print(response.body);

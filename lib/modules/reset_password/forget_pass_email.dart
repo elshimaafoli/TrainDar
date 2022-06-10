@@ -15,12 +15,12 @@ class ForgetPasswordEmail extends StatelessWidget {
       backgroundColor: const Color.fromRGBO(223, 209, 162, 1),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(children: [
+          child: Column(
+              children: [
             Stack(
-              children :[
-              const Image(
+              children :const [
+              Image(
                 image: AssetImage("images/forgotPassword.jpg"),
-                //height: MediaQuery.of(context).size.height,
               ),
           ]),
             Container(
@@ -31,7 +31,7 @@ class ForgetPasswordEmail extends StatelessWidget {
                       BorderRadius.only(topLeft: corner, topRight: corner),
                   color: const Color.fromRGBO(239, 231, 206, 100)),
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.44,
+              height: MediaQuery.of(context).size.height * 0.5,
               child: Column(
                 children: [
 //enter your email

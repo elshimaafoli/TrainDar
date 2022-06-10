@@ -8,10 +8,16 @@ import '../../swap.dart';
 
 var corner = const Radius.circular(55.0);
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   var email = TextEditingController();
   var password = TextEditingController();
   var keyForm = GlobalKey<FormState>();
+  bool showPassword = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +29,7 @@ class Login extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height*0.42,
+                    height: MediaQuery.of(context).size.height * 0.42,
                     child: const Image(
                       image: AssetImage("images/trackMe.jpg"),
                     ),
@@ -35,7 +41,7 @@ class Login extends StatelessWidget {
                             topLeft: corner, topRight: corner),
                         color: const Color.fromRGBO(239, 231, 206, 100)),
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height*0.55,
+                    height: MediaQuery.of(context).size.height * 0.55,
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -103,7 +109,7 @@ class Login extends StatelessWidget {
                               padding: const EdgeInsets.only(
                                   left: 12, right: 12, top: 8),
                               child: TextFormField(
-                                obscureText: true,
+                                obscureText: showPassword,
                                 controller: password,
                                 validator: (value) {
                                   if (value!.isEmpty) {
@@ -111,25 +117,38 @@ class Login extends StatelessWidget {
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: Color.fromRGBO(255, 255, 255, 0.6),
-                                  prefixIcon: Icon(Icons.lock,
+                                  fillColor:
+                                      const Color.fromRGBO(255, 255, 255, 0.6),
+                                  prefixIcon: const Icon(Icons.lock,
                                       size: 30,
                                       color: Color.fromRGBO(87, 89, 86, 0.85)),
-                                  suffixIcon: Icon(
-                                    Icons.remove_red_eye_rounded,
-                                    size: 30,
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        if (showPassword) {
+                                          showPassword = false;
+                                        } else {
+                                          showPassword = true;
+                                        }
+                                      });
+                                    },
+                                    icon: const Icon(
+                                      Icons.remove_red_eye_outlined,
+                                      size: 26,
+                                    ),
+                                    color:
+                                        const Color.fromRGBO(87, 89, 86, 0.85),
+                                  ),
+                                  labelStyle: const TextStyle(
                                     color: Color.fromRGBO(87, 89, 86, 0.85),
                                   ),
-                                  labelStyle: TextStyle(
-                                    color: Color.fromRGBO(87, 89, 86, 0.85),
-                                  ),
-                                  label: Text(
+                                  label: const Text(
                                     "Password",
                                     style: TextStyle(fontSize: 20),
                                   ),
-                                  enabledBorder: OutlineInputBorder(
+                                  enabledBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         width: 1,
                                         color:
@@ -137,7 +156,7 @@ class Login extends StatelessWidget {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
+                                  focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         width: 1,
                                         color:

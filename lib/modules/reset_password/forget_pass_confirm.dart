@@ -24,13 +24,14 @@ class ForgetPassConfirm extends StatelessWidget {
               ),
               Container(
                 //design of container ..
+
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.black54),
                     borderRadius:
                         BorderRadius.only(topLeft: corner, topRight: corner),
                     color: const Color.fromRGBO(239, 231, 206, 100)),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.45,
+                height: MediaQuery.of(context).size.height * 0.5,
                 child: Center(
                   child: Align(
                     alignment: Alignment.bottomCenter,

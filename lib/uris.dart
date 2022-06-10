@@ -5,9 +5,9 @@ class URI {
   };
 // trains
   static String getTrainId =
-      "https://train-dar.azurewebsites.net/api/v1/train/view";
+      "https://train-dar.azurewebsites.net/api/v1/train/view-all";
   static String getTrainLocation =
-      "https://train-dar.azurewebsites.net/api/v1/train/view/";
+      "https://train-dar.azurewebsites.net/api/v1/train/view?";
 
 //Stations
   static String getNameStations =

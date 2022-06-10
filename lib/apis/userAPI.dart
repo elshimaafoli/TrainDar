@@ -6,7 +6,7 @@ import 'package:traindar_app/uris.dart';
 class UserAPI {
   static int currentUserId = 0;
 
-  //g et id
+  //get id
   Future<bool> loginUser(String email, String password) async {
     final response = await http.post(
         Uri.parse(URI.login),
@@ -30,7 +30,6 @@ class UserAPI {
         Uri.parse(URI.createUser),
         body: body,
         headers: URI.headers);
-    print(response.body);
     if (response.statusCode == 200) {
       print(response.body);
       return true;
@@ -44,7 +43,6 @@ class UserAPI {
         headers: URI.headers);
     var body = User.fromJson(jsonDecode(response.body));
     print(body.id);
-    print(body.name);
     return body;
   }
 }
