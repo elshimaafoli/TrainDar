@@ -4,11 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:traindar_app/apis/TrainIDAPI.dart';
 import 'package:traindar_app/apis/station_api.dart';
 import 'package:traindar_app/models/station/near_stations.dart';
-import 'package:traindar_app/models/train/nearby_trains.dart';
-import 'package:traindar_app/models/train/train.dart';
 
-import '../../LocationScreen.dart';
-import '../../swap.dart';
 
 class NearestStations extends StatefulWidget {
   const NearestStations({Key? key}) : super(key: key);
