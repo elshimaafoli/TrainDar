@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:traindar_app/apis/userAPI.dart';
-import 'package:traindar_app/models/station/nearest_stations.dart';
+import 'package:traindar_app/models/station/near_stations.dart';
 import 'package:traindar_app/models/train/nearby_trains.dart';
 import '../uris.dart';
 
@@ -39,8 +39,8 @@ class StationAPI {
     return nearbyTrains.toList();
   }
 
-  Future<List<NearestStations>> getNearestStations({required int trainId}) async {
-    List<NearestStations> nearestStations = [];
+  Future<List<NearStations>> getNearestStations({required int trainId}) async {
+    List<NearStations> nearestStations = [];
     var response = await http.get(
       Uri.parse(
           "https://train-dar.azurewebsites.net/api/v1/api/v1/station/"
@@ -49,8 +49,9 @@ class StationAPI {
       headers: URI.headers,
     );
     var body = jsonDecode(response.body);
+    print(body);
     for (var item in body) {
-      nearestStations.add(NearestStations.fromJson(item));
+      nearestStations.add(NearStations.fromJson(item));
     }
     return nearestStations.toList();
   }

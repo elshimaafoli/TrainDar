@@ -21,6 +21,7 @@ class UserAPI {
       currentUserId = responseBody as int;
       return true;
     } else {
+      print(response.body);
       return false;
     }
   }

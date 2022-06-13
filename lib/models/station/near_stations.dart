@@ -4,12 +4,12 @@
 
 import 'dart:convert';
 
-NearestStations nearestStationsFromJson(String str) => NearestStations.fromJson(json.decode(str));
+NearStations nearStationsFromJson(String str) => NearStations.fromJson(json.decode(str));
 
-String nearestStationsToJson(NearestStations data) => json.encode(data.toJson());
+String nearStationsToJson(NearStations data) => json.encode(data.toJson());
 
-class NearestStations {
-  NearestStations({
+class NearStations {
+  NearStations({
     required this.name,
     required this.timeLeft,
   });
@@ -17,7 +17,7 @@ class NearestStations {
   String name;
   String timeLeft;
 
-  factory NearestStations.fromJson(Map<String, dynamic> json) => NearestStations(
+  factory NearStations.fromJson(Map<String, dynamic> json) => NearStations(
     name: json["name"],
     timeLeft: json["timeLeft"],
   );

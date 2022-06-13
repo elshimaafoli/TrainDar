@@ -1,28 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:traindar_app/models/users/user.dart';
+
 import 'package:traindar_app/modules/home/home.dart';
 import 'package:traindar_app/modules/profile/profile.dart';
 
 
 class HomeLayout extends StatefulWidget {
   @override
-  User currentuser;
-  HomeLayout(this.currentuser);
-  State<StatefulWidget> createState() {
-    return _State(currentuser);
-  }
+  State<StatefulWidget> createState() => _State();
 }
 
 class _State extends State<HomeLayout> {
   @override
   int currentIndex = 1;
-  User currentuser;
   List<Widget> screens =[];
   void initState() {
     super.initState();
-     screens= [const Text(''), HomeScreen(), Profile(currentuser.name)];
+     screens= [const Text(''), const HomeScreen(), Profile()];
   }
-  _State(this.currentuser);
+
 
 
   Widget build(BuildContext context) {

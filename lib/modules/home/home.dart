@@ -1,51 +1,103 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:traindar_app/apis/share_location_api.dart';
+import 'package:traindar_app/layout/home_layout.dart';
+import 'package:traindar_app/modules/nearest_stations/nearest_stations.dart';
 import 'package:traindar_app/modules/search_by_station/select_stations.dart';
 import 'package:traindar_app/modules/search_by_trainid/messagesearch.dart';
 import 'package:traindar_app/modules/share_location/select_train_id.dart';
-import 'package:traindar_app/shared/network/local/local_storage.dart';
 import '../../swap.dart';
+
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String shareText = "Share Location";
-  @override
-  initState() {
-    super.initState();
-    if (shareText != "Stop Sharing") {
-      LocalStorage().setShareData(false);
-    }
-    LocalStorage().getShareData();
-    if (LocalStorage.check  == true) {
-      shareText = "Stop Sharing";
-   }
+  String _shareText = "Share Location";
+  bool _isValidShare = false;
+  late StreamSubscription<LocationData> locationSubscription;
+  Future<bool> getValidShare() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isValidShare = prefs.getBool("isShare")!;
+      print('$_isValidShare+get');
+      print('${prefs.getBool("isShare")}   msh');
+    });
+    return Future(() => _isValidShare);
   }
+
+  void setValidShare() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setBool("isShare", _isValidShare);
+      print('$_isValidShare+set');
+    });
+  }
+
+  void _operationsOfLocation() {
+    Location location = Location();
+    locationSubscription =
+        location.onLocationChanged.listen((LocationData currentLocation) async {
+    bool res= await ShareAPI().sharedLocation(
+               locationLat:
+           currentLocation.latitude as double,
+              locationLng:
+               currentLocation.latitude as double);
+    print('$res  sls');
+          print(currentLocation.longitude);
+          print(currentLocation.latitude);
+        });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      bool var1 = await getValidShare();
+      if (var1) {
+        _shareText = "Stop Sharing";
+        _operationsOfLocation();
+      } else {
+        _shareText = "Share Location";
+      }
+      print('$var1+init');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     List<DataButton> fetchButton = [
       DataButton(
-          text: shareText,
+          text: _shareText,
           icon: Icons.location_on,
           colorIcon: Colors.red,
           function: () async {
-            if(shareText=="Stop Sharing"){
+            if (_isValidShare) {
               setState(() {
-                LocalStorage().setShareData(false);
-                shareText="Share Location";
-                //ShareAPI().deleteShare(trainId:  );
+                locationSubscription.cancel();
+                _isValidShare = false;
+                setValidShare();
+                _shareText = "Share Location";
+                ShareAPI().deleteShare(trainId: 2015);
+                Navigator.push(context, Config.route(HomeLayout()));
               });
-            }
-            Location location = Location();
-            PermissionStatus _permissionGranted =
-                await location.hasPermission();
-            if (_permissionGranted == PermissionStatus.granted) {
-              Navigator.push(context, Config.route(SelectTrainID()));
             } else {
-              _permissionGranted = await location.requestPermission();
+              //operation of share location
+              Location location = Location();
+              PermissionStatus _permissionGranted =
+                  await location.hasPermission();
+              if (_permissionGranted == PermissionStatus.granted) {
+                Navigator.push(context, Config.route(SelectTrainID()));
+              } else {
+                _permissionGranted = await location.requestPermission();
+                Navigator.push(context, Config.route(SelectTrainID()));
+              }
             }
           }),
       DataButton(
@@ -64,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
           text: "Nearest Station",
           icon: Icons.location_city,
           function: () {
-            Navigator.push(context, Config.route(MessageSearch()));
+            Navigator.push(context, Config.route(NearestStations()));
           }),
       DataButton(
           text: "Manage Points",
@@ -86,14 +138,6 @@ class _HomeScreenState extends State<HomeScreen> {
             Icons.arrow_back,
           ),
         ),
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              Navigator.push(context, Config.route(SelectStations()));
-            },
-            child: Text("test"),
-          )
-        ],
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           mainAxisSize: MainAxisSize.min,

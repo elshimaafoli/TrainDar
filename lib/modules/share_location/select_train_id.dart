@@ -1,20 +1,29 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traindar_app/apis/TrainIDAPI.dart';
 import 'package:traindar_app/apis/share_location_api.dart';
-import 'package:traindar_app/modules/home/home.dart';
-import 'package:traindar_app/shared/network/local/local_storage.dart';
-
+import 'package:traindar_app/layout/home_layout.dart';
 import '../../swap.dart';
 
 class SelectTrainID extends StatefulWidget {
+  const SelectTrainID({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _state();
 }
 
 class _state extends State<SelectTrainID> {
   int? selectedID;
+  static bool _isValidShare = false;
+  void setValidShare() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      prefs.setBool("isShare", _isValidShare);
+      print('$_isValidShare+s');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,108 +68,120 @@ class _state extends State<SelectTrainID> {
                 if (snapshot.hasData) {
                   return Center(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.values.last,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.only(left: 20.0, right: 20),
+                          padding:
+                          const EdgeInsets.only(top: 20, bottom: 20),
                           color: const Color.fromRGBO(211, 200, 160, 0.85),
-                          child: const Padding(
-                            padding: EdgeInsets.all(30),
-                            child: Text(
-                              "Please, "
-                              "Select Your Train ID",
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
+                          child: const Text(
+                            "Please, "
+                                "Select Your Train ID",
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20,
                             ),
                           ),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: const Color.fromRGBO(255, 255, 255, 90),
-                            border: Border.all(
-                                color:
-                                    const Color.fromRGBO(112, 112, 112, 100)),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-                            child: DropdownButton<int>(
-                              dropdownColor:
-                                  const Color.fromRGBO(255, 255, 255, 90),
-                              hint: const Text("Train ID"),
-                              iconSize: 35,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.black45,
-                                fontStyle: FontStyle.italic,
-                              ),
-                              elevation: 20,
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        Padding(
+                          padding:
+                          const EdgeInsets.only(left: 20.0, right: 20),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color:
+                              const Color.fromRGBO(173, 172, 156, 0.80),
+                              border: Border.all(
+                                  color: const Color.fromRGBO(
+                                      112, 112, 112, 100)),
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(30)),
-                              items: snapshot.data!.map((int value) {
-                                return DropdownMenuItem<int>(
-                                  value: value,
-                                  child: Text(value.toString()),
-                                );
-                              }).toList(),
-                              onChanged: (newVal) {
-                                setState(() {
-                                  selectedID = newVal;
-                                });
-                              },
-                              value: selectedID,
+                              const BorderRadius.all(Radius.circular(10)),
+                            ),
+                            child: Padding(
+                              padding:
+                              const EdgeInsets.only(left: 15, right: 20),
+                              child: DropdownButton<int>(
+                                isExpanded: true,
+                                dropdownColor:
+                                const Color.fromRGBO(173, 172, 156, 0.80),
+                                hint: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.directions_train_rounded,
+                                    ),
+                                    Text("TrainID"),
+                                  ],
+                                ),
+                                alignment: Alignment.bottomCenter,
+                                iconSize: 35,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black87,
+                                ),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(30)),
+                                items: snapshot.data!.map((int value) {
+                                  return DropdownMenuItem<int>(
+                                    value: value,
+                                    child: Text(value.toString()),
+                                  );
+                                }).toList(),
+                                onChanged: (newval) {
+                                  setState(() {
+                                    selectedID = newval;
+                                  });
+                                },
+                                value: selectedID,
+                              ),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.only(top: 50.0,right: 20.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               MaterialButton(
                                 onPressed: () async {
-                                  bool res = await ShareAPI().shareIdFirstTime(
+                                  bool result =
+                                      await ShareAPI().shareIdFirstTime(
                                     trainId: selectedID as int,
                                   );
-                                  if (res) {
-                                    LocalStorage().setShareData(true);
-                                    Location loc = Location();
-                                    bool checkGBS = await loc.serviceEnabled();
-                                    if (checkGBS) {
-                                      loc.enableBackgroundMode(enable: true);
-                                      loc.onLocationChanged.listen(
-                                          (LocationData currentLocation) {
-                                        ShareAPI().sharedLocationFirstTime(
-                                            locationLat: currentLocation
-                                                .latitude as double,
-                                            locationLng: currentLocation
-                                                .longitude as double);
-                                        print(currentLocation.longitude);
-                                        print(currentLocation.latitude);
-                                      });
-                                    }
-                                    else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            "To share your location,"
-                                            "you must open your GBS.",
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                            ),
+                                  if (result) {
+                                    //set is valid =true;
+                                    //navigate to home layout
+                                    setState(() {
+                                      _isValidShare = true;
+                                      setValidShare();
+                                    });
+                                    Navigator.push(
+                                        context, Config.route(HomeLayout()));
+                                  }
+                                  else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(
+                                       SnackBar(
+                                        content:const  Text(
+                                          "Something is wrong",
+                                          style: TextStyle(
+                                            fontSize: 14,
                                           ),
-                                          duration: Duration(seconds: 2),
-                                          width: double
-                                              .infinity, // Width of the SnackBar.
-                                          behavior: SnackBarBehavior.floating,
                                         ),
-                                      );
-                                    }
-                                    Navigator.push(context, Config.route(HomeScreen()));
+                                        backgroundColor: const Color.fromRGBO(211, 200, 160, 0.85),
+                                        duration: const Duration(seconds: 10),
+                                        padding: const EdgeInsets.all(10),
+                                        action: SnackBarAction(
+                                            label: 'Undo',
+                                            textColor: Colors.black,
+                                            onPressed: (){
+                                            }),
+                                      ),
+                                    );
                                   }
                                 },
                                 elevation: 10,

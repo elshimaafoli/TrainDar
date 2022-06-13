@@ -16,9 +16,6 @@ class TrainAPI {
     for (var item in body) {
       trainsID.add(item);
     }
-    for (var item in trainsID) {
-      print(item);
-    }
     return trainsID.toList();
   }
 

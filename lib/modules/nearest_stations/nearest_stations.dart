@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:traindar_app/apis/TrainIDAPI.dart';
 import 'package:traindar_app/apis/station_api.dart';
+import 'package:traindar_app/models/station/near_stations.dart';
 import 'package:traindar_app/models/train/nearby_trains.dart';
 import 'package:traindar_app/models/train/train.dart';
 
@@ -155,11 +156,11 @@ class _NearestStationsState extends State<NearestStations> {
                         ),
                         Visibility(
                           visible: _showList!,
-                          child: FutureBuilder<List<NearbyTrains>>(
-                              future: StationAPI().getNearbyTrains(
-                                  station1: station1!, station2: station2!),
+                          child: FutureBuilder<List<NearStations>>(
+                              future: StationAPI().getNearestStations(
+                                 trainId: 1015),
                               builder: (BuildContext context,
-                                  AsyncSnapshot<List<NearbyTrains>> snapshot) {
+                                  AsyncSnapshot<List<NearStations>> snapshot) {
                                 if (snapshot.hasData) {
                                   return Center(
                                     child: Container(
@@ -202,36 +203,13 @@ class _NearestStationsState extends State<NearestStations> {
                                           ],
                                           rows: List.generate(
                                               snapshot.data!.length, (index) {
-                                            final trainId =
-                                                snapshot.data![index].trainId;
+                                            final name =
+                                                snapshot.data![index].name;
                                             final time =
                                                 snapshot.data![index].timeLeft;
                                             return DataRow(cells: [
-                                              DataCell(MaterialButton(
-                                                  onPressed: () async {
-                                                    TrainModel train =
-                                                        await TrainAPI()
-                                                            .getLoaction(trainId);
-                                                    Navigator.push(
-                                                        context,
-                                                        Config.route(LocationScreen(
-                                                            train.locationLat,
-                                                            train.locationLng)));
-                                                  },
-                                                  child:
-                                                      Text(trainId.toString()))),
-                                              DataCell(MaterialButton(
-                                                  onPressed: () async {
-                                                    TrainModel train =
-                                                        await TrainAPI()
-                                                            .getLoaction(trainId);
-                                                    Navigator.push(
-                                                        context,
-                                                        Config.route(LocationScreen(
-                                                            train.locationLat,
-                                                            train.locationLng)));
-                                                  },
-                                                  child: Text(time))),
+                                              DataCell(Text(name)),
+                                              DataCell(Text(time)),
                                             ]);
                                           }),
                                         ),

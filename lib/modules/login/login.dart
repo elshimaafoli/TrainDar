@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:traindar_app/apis/userAPI.dart';
 import 'package:traindar_app/layout/home_layout.dart';
-import 'package:traindar_app/models/users/user.dart';
 import '../reset_password/forget_pass_email.dart';
 import '../signup/signup.dart';
 import '../../swap.dart';
@@ -209,13 +208,11 @@ class _LoginState extends State<Login> {
                                     if (keyForm.currentState!.validate()) {
                                       if (await UserAPI().loginUser(
                                           email.text, password.text)) {
-                                        User currentUser = await UserAPI()
-                                            .getData(UserAPI.currentUserId);
 
                                         Navigator.push(
                                             context,
                                             Config.route(
-                                                HomeLayout(currentUser)));
+                                                HomeLayout()));
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
