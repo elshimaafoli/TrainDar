@@ -24,11 +24,20 @@ class TrainAPI {
       Uri.parse(URI.getTrainLocation+"user-id=${UserAPI.currentUserId}&train-id=${train_id}"),
       headers: URI.headers,
     );
-    TrainModel trainModel = TrainModel(id: train_id);
-    var body = json.decode(response.body);
-    trainModel.locationLng=TrainModel.locationFromJson(body).locationLng;
-    trainModel.locationLat=TrainModel.locationFromJson(body).locationLat;
-    print(trainModel.locationLat);
-    return trainModel;
+    if(response.statusCode==200) {
+      TrainModel trainModel = TrainModel(id: train_id);
+      var body = json.decode(response.body);
+      trainModel.locationLng = TrainModel
+          .locationFromJson(body)
+          .locationLng;
+      trainModel.locationLat = TrainModel
+          .locationFromJson(body)
+          .locationLat;
+      print(trainModel.locationLat);
+      return trainModel;
+    }
+    else {
+      return TrainModel(id: 0);
+    }
   }
 }

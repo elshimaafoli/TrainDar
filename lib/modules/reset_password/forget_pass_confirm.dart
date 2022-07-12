@@ -127,14 +127,9 @@ class ForgetPassConfirm extends StatelessWidget {
                                               fontSize: 20,
                                             ),
                                           ),
-                                          duration: Duration(seconds: 2),
-                                          width: double
-                                              .infinity, // Width of the SnackBar.
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                8.0, // Inner padding for SnackBar content.
-                                          ),
-                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor:  Color.fromRGBO(211, 200, 160, 0.85),
+                                          duration:  Duration(seconds: 5),
+                                          padding:  EdgeInsets.all(10),
                                         ),
                                       );
                                     }

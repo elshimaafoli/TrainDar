@@ -2,24 +2,30 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:traindar_app/apis/TrainIDAPI.dart';
 import 'package:traindar_app/apis/station_api.dart';
+import 'package:traindar_app/layout/home_layout.dart';
 import 'package:traindar_app/models/train/nearby_trains.dart';
 import 'package:traindar_app/models/train/train.dart';
 
 import '../../LocationScreen.dart';
 import '../../swap.dart';
 
-class ListIDTrains extends StatelessWidget {
+class ListIDTrains extends StatefulWidget {
   String? station1 = "default";
   String? station2 = "default";
   ListIDTrains(this.station1, this.station2);
+
+  @override
+  State<ListIDTrains> createState() => _ListIDTrainsState();
+}
+
+class _ListIDTrainsState extends State<ListIDTrains> {
   @override
   Widget build(BuildContext context) {
-    print(station1);
-    print(station2);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(223, 209, 162, 1),
-        foregroundColor: const Color.fromRGBO(90, 89, 100, 1),
+        foregroundColor:Colors.black,
         title: Row(
           children: const [
             Padding(
@@ -33,7 +39,7 @@ class ListIDTrains extends StatelessWidget {
               'Search by Stations',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 26,
+                fontSize: 20,
               ),
             ),
           ],
@@ -54,11 +60,30 @@ class ListIDTrains extends StatelessWidget {
             decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),
             child: FutureBuilder<List<NearbyTrains>>(
                 future: StationAPI()
-                    .getNearbyTrains(station1: station1!, station2: station2!),
+                    .getNearbyTrains(station1: widget.station1!, station2: widget.station2!),
                 builder: (BuildContext context,
                     AsyncSnapshot<List<NearbyTrains>> snapshot) {
                   if (snapshot.hasData) {
-                    return Center(
+                     if(snapshot.data!.isEmpty)
+                    {
+                      return AlertDialog(
+                        backgroundColor: const Color.fromRGBO(211, 200, 160, 0.85),
+                        title: const Text('There is no trains coming'),
+                        actions: [
+                          MaterialButton(onPressed: (){
+                            Navigator.push(context,
+                                Config.route(HomeLayout()));
+                          },
+                              color: const Color.fromRGBO(246, 188, 0, 1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Text('ok'))
+                        ],
+                      );
+                    }
+                    else
+                   { return Center(
                       child:Container(
                         alignment: Alignment.topCenter,
                         padding: const EdgeInsets.only(top: 20.0),
@@ -128,7 +153,7 @@ class ListIDTrains extends StatelessWidget {
                           ),
                         ),
                       ),
-                    );
+                    );}
                   } else {
                     return const Center(
                       child: CircularProgressIndicator(

@@ -7,11 +7,12 @@ import 'package:location/location.dart';
 import 'locationServices.dart';
 
 class LocationScreen extends StatefulWidget {
-  @override
+
   double location_lat = 0.0;
   double location_lng = 0.0;
   LocationScreen(this.location_lat, this.location_lng, {Key? key})
       : super(key: key);
+  @override
   State<LocationScreen> createState() =>
       _LocationScreenState(location_lat, location_lng);
 }
@@ -35,7 +36,7 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     final CameraPosition _pos = CameraPosition(
-        target: LatLng(location_lng, location_lat), zoom: 16.4767);
+        target: LatLng(location_lat, location_lng), zoom: 16.4767);
     LatLng currentPosition = _pos.target;
     // Location loc= Location();
     return Scaffold(
@@ -70,7 +71,6 @@ class _LocationScreenState extends State<LocationScreen> {
             _setMarker(_pos.target);
           });
         },
-
         onCameraMove: (newposition) {
           setState(() {
             currentPosition = newposition.target;
@@ -99,14 +99,12 @@ class _LocationScreenState extends State<LocationScreen> {
     LocationData _data = await LocationServices().getLocation();
     _animateCamera(_data);
   }
-
   Future<void> _animateCamera(LocationData _loc) async {
     final GoogleMapController controller = await _controller.future;
     CameraPosition _cameraPosition = CameraPosition(
         target: LatLng(_loc.latitude!, _loc.longitude!), zoom: 17.4767);
     controller.animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
   }
-
   Future<void> _setMarker(LatLng _locat) async {
     Marker newMarker = Marker(
         markerId: (MarkerId(_locat.toString())),

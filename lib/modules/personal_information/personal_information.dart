@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:traindar_app/apis/userAPI.dart';
+import 'package:traindar_app/layout/home_layout.dart';
 import 'package:traindar_app/models/users/user.dart';
+import 'package:traindar_app/modules/home/home.dart';
+
+import '../../swap.dart';
 
 class PersonalInformation extends StatefulWidget {
   @override
@@ -16,6 +20,16 @@ class _state extends State<PersonalInformation> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(223, 209, 164, 0.85),
       appBar: AppBar(
+        leading: IconButton(
+          alignment: Alignment.topLeft,
+          onPressed: () {
+            Navigator.push(
+                context, Config.route(HomeScreen()));
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+          ),
+        ),
         foregroundColor: Colors.black54,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -31,8 +45,9 @@ class _state extends State<PersonalInformation> {
             Expanded(
               child: Text(
                 "Personal Information",
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                 ),
                 maxLines: 2,
               ),

@@ -15,7 +15,7 @@ class TrainModel {
     this.locationLng=0.0,
     this.direction='up',
     this.type='AC',
-    this.lastKnownTime=null,
+   // this.lastKnownTime=null,
     //this.sharedUsers,
   });
 
@@ -24,7 +24,7 @@ class TrainModel {
   double locationLng;
   String direction;
   String type;
-  dynamic lastKnownTime;
+ // dynamic lastKnownTime;
  // List<dynamic> sharedUsers;
 
   factory TrainModel.fromJson(Map<String, dynamic> json) => TrainModel(
@@ -33,7 +33,7 @@ class TrainModel {
     locationLng: json["locationLng"].toDouble(),
     direction: json["direction"],
     type: json["type"],
-    lastKnownTime: json["lastKnownTime"],
+  //  lastKnownTime: json["lastKnownTime"],
     //sharedUsers: List<dynamic>.from(json["sharedUsers"].map((x) => x)),
   );
 
@@ -48,7 +48,7 @@ class TrainModel {
     "locationLng": locationLng,
     "direction": direction,
     "type": type,
-    "lastKnownTime": lastKnownTime,
+   // "lastKnownTime": lastKnownTime,
    // "sharedUsers": List<dynamic>.from(sharedUsers.map((x) => x)),
   };
 }

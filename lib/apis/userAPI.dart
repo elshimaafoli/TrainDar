@@ -16,12 +16,12 @@ class UserAPI {
         }),
         headers: URI.headers);
     if (response.statusCode == 200) {
-      print(response.body);
+      //print(response.body);
       var responseBody = jsonDecode(response.body);
       currentUserId = responseBody as int;
       return true;
     } else {
-      print(response.body);
+      //print(response.body);
       return false;
     }
   }

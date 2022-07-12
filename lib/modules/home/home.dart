@@ -7,17 +7,16 @@ import 'package:traindar_app/apis/share_location_api.dart';
 import 'package:traindar_app/layout/home_layout.dart';
 import 'package:traindar_app/modules/nearest_stations/nearest_stations.dart';
 import 'package:traindar_app/modules/search_by_station/select_stations.dart';
-import 'package:traindar_app/modules/search_by_trainid/messagesearch.dart';
+import 'package:traindar_app/modules/search_by_trainid/search_by_id.dart';
 import 'package:traindar_app/modules/share_location/select_train_id.dart';
 import '../../swap.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
-
+static int trainId=0;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<HomeScreen> {
   String _shareText = "Share Location";
   bool _isValidShare = false;
@@ -44,15 +43,37 @@ class _HomeScreenState extends State<HomeScreen> {
     Location location = Location();
     locationSubscription =
         location.onLocationChanged.listen((LocationData currentLocation) async {
-    bool res= await ShareAPI().sharedLocation(
-               locationLat:
-           currentLocation.latitude as double,
-              locationLng:
-               currentLocation.latitude as double);
-    print('$res  sls');
-          print(currentLocation.longitude);
-          print(currentLocation.latitude);
-        });
+          bool res = await ShareAPI().sharedLocation(
+          locationLat: currentLocation.latitude as double,
+          locationLng: currentLocation.longitude as double);
+      if (!res) {
+        setState(() {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(
+            SnackBar(
+              content:const  Text(
+                "you share a wrong location",
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+              backgroundColor: const Color.fromRGBO(211, 200, 160, 0.85),
+              duration: const Duration(seconds: 10),
+              padding: const EdgeInsets.all(10),
+              action: SnackBarAction(
+                  label: 'Undo',
+                  textColor: Colors.black,
+                  onPressed: (){
+                  }),
+            ),
+          );
+          locationSubscription.cancel();
+          _isValidShare = false;
+          setValidShare();
+          _shareText = "Share Location";
+          ShareAPI().deleteShare(trainId: HomeScreen.trainId);
+        });}
+    });
   }
 
   @override
@@ -66,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
       } else {
         _shareText = "Share Location";
       }
-      print('$var1+init');
+     // print('$var1+init');
     });
   }
 
@@ -80,11 +101,12 @@ class _HomeScreenState extends State<HomeScreen> {
           function: () async {
             if (_isValidShare) {
               setState(() {
+                print(HomeScreen.trainId);
                 locationSubscription.cancel();
                 _isValidShare = false;
                 setValidShare();
                 _shareText = "Share Location";
-                ShareAPI().deleteShare(trainId: 2015);
+                ShareAPI().deleteShare(trainId: HomeScreen.trainId);
                 Navigator.push(context, Config.route(HomeLayout()));
               });
             } else {
@@ -104,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
           text: "Search By TrainID",
           icon: Icons.train,
           function: () {
-            Navigator.push(context, Config.route(MessageSearch()));
+            Navigator.push(context, Config.route(SearchByID()));
           }),
       DataButton(
           text: "Search By Station",
@@ -131,13 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(223, 209, 162, 1),
         foregroundColor: Colors.black,
-        leading: IconButton(
-          alignment: Alignment.topLeft,
-          onPressed: () {},
-          icon: const Icon(
-            Icons.arrow_back,
-          ),
-        ),
+
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           mainAxisSize: MainAxisSize.min,
@@ -149,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               'Home',
               style: TextStyle(
-                fontSize: 26,
+                fontSize: 22,
               ),
             ),
           ],
@@ -201,9 +217,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Center(
                   child: Text(
                     dataButton.text,
+                    textAlign: TextAlign.center,
                     maxLines: 2,
                     style: const TextStyle(
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

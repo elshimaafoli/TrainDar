@@ -117,19 +117,14 @@ class ForgetPasswordEmail extends StatelessWidget {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text(
-                                        "please, Enter  a valid email.",
+                                        "Please, enter a valid email.",
                                         style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 16,
                                         ),
                                       ),
-                                      duration: Duration(seconds: 2),
-                                      width: double
-                                          .infinity, // Width of the SnackBar.
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                        8.0, // Inner padding for SnackBar content.
-                                      ),
-                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor:  Color.fromRGBO(211, 200, 160, 0.85),
+                                      duration:  Duration(seconds: 10),
+                                      padding:  EdgeInsets.all(10),
                                     ),
                                   );
                                 }

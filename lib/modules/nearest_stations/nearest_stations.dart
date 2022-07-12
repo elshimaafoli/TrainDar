@@ -1,11 +1,11 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:traindar_app/apis/TrainIDAPI.dart';
 import 'package:traindar_app/apis/station_api.dart';
-import 'package:traindar_app/models/station/near_stations.dart';
-
-
+import 'package:traindar_app/layout/home_layout.dart';
+import 'package:traindar_app/models/station/close_stations.dart';
+import 'package:traindar_app/modules/profile/profile.dart';
+import '../../swap.dart';
 class NearestStations extends StatefulWidget {
   const NearestStations({Key? key}) : super(key: key);
 
@@ -16,13 +16,13 @@ class NearestStations extends StatefulWidget {
 class _NearestStationsState extends State<NearestStations> {
   int? selectedID;
   bool? _showList;
-  String? station1 = "sadafa";
-  String? station2 = "tahta";
- @override
+  int currentIndex = 1;
+  @override
   void initState() {
     _showList = false;
     super.initState();
   }
+
   void show() {
     setState(() {
       _showList = true;
@@ -34,7 +34,7 @@ class _NearestStationsState extends State<NearestStations> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(223, 209, 162, 1),
-        foregroundColor: const Color.fromRGBO(90, 89, 100, 1),
+        foregroundColor: Colors.black,
         title: Row(
           children: const [
             Padding(
@@ -48,7 +48,7 @@ class _NearestStationsState extends State<NearestStations> {
               'Nearest Stations',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 26,
+                fontSize: 20,
               ),
             ),
           ],
@@ -103,9 +103,9 @@ class _NearestStationsState extends State<NearestStations> {
                                     Text("TrainID"),
                                   ],
                                 ),
-                                iconSize: 35,
+                                iconSize: 25,
                                 style: const TextStyle(
-                                  fontSize: 22,
+                                  fontSize: 17,
                                   color: Colors.black87,
                                 ),
                                 borderRadius:
@@ -116,9 +116,10 @@ class _NearestStationsState extends State<NearestStations> {
                                     child: Text(value.toString()),
                                   );
                                 }).toList(),
-                                onChanged: (newVal) {
+                                onChanged: (value) {
                                   setState(() {
-                                    selectedID = newVal;
+                                    selectedID = value;
+                                    print(selectedID);
                                   });
                                 },
                                 value: selectedID,
@@ -141,7 +142,7 @@ class _NearestStationsState extends State<NearestStations> {
                               child: const Text(
                                 "Search",
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 17,
                                 ),
                               ),
                               padding:
@@ -152,66 +153,89 @@ class _NearestStationsState extends State<NearestStations> {
                         ),
                         Visibility(
                           visible: _showList!,
-                          child: FutureBuilder<List<NearStations>>(
-                              future: StationAPI().getNearestStations(
-                                 trainId: 1015),
+                          child: FutureBuilder<List<CloseStations>>(
+                              future: StationAPI()
+                                  .getNearestStations(trainId:selectedID??0),
                               builder: (BuildContext context,
-                                  AsyncSnapshot<List<NearStations>> snapshot) {
+                                  AsyncSnapshot<List<CloseStations>> snapshot) {
                                 if (snapshot.hasData) {
-                                  return Center(
-                                    child: Container(
-                                      alignment: Alignment.topCenter,
-                                      padding: const EdgeInsets.only(top: 20.0),
-                                      child: SingleChildScrollView(
-                                        child: DataTable(
-                                          border: TableBorder.all(
-                                              color: Colors.brown,
-                                              width: 2,
+                                  if (snapshot.data!.isEmpty) {
+                                    return AlertDialog(
+                                      backgroundColor: const Color.fromRGBO(
+                                          211, 200, 160, 0.85),
+                                      title: const Text(
+                                          'There is no nearby stations'),
+                                      actions: [
+                                        MaterialButton(
+                                            onPressed: () {
+                                              Navigator.push(context,
+                                                  Config.route(HomeLayout()));
+                                            },
+                                            color: const Color.fromRGBO(
+                                                246, 188, 0, 1),
+                                            shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(10)
-                                                  )
-                                          ),
-                                          decoration: const BoxDecoration(
-                                            color: Color.fromRGBO(
-                                                208, 196, 156, 0.75),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10)
+                                                  BorderRadius.circular(10),
                                             ),
+                                            child: const Text('ok'))
+                                      ],
+                                    );
+                                  } else {
+                                    return Center(
+                                      child: Container(
+                                        alignment: Alignment.topCenter,
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
+                                        child: SingleChildScrollView(
+                                          child: DataTable(
+                                            border: TableBorder.all(
+                                                color: Colors.brown,
+                                                width: 2,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(10))),
+                                            decoration: const BoxDecoration(
+                                              color: Color.fromRGBO(
+                                                  208, 196, 156, 0.75),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
+                                            ),
+                                            columns: const [
+                                              DataColumn(
+                                                  label: Text(
+                                                'Stations',
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                textAlign: TextAlign.center,
+                                              )),
+                                              DataColumn(
+                                                  label: Text(
+                                                'Remaining Time',
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                textAlign: TextAlign.center,
+                                              )),
+                                            ],
+                                            rows: List.generate(
+                                                snapshot.data!.length, (index) {
+                                              final name =
+                                                  snapshot.data![index].name;
+                                              final time = snapshot
+                                                  .data![index].timeLeft;
+                                              return DataRow(cells: [
+                                                DataCell(Text(name)),
+                                                DataCell(Text(time)),
+                                              ]);
+                                            }),
                                           ),
-                                          columns: const [
-                                            DataColumn(
-                                                label: Text(
-                                              'Stations',
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                              textAlign: TextAlign.center,
-                                            )),
-                                            DataColumn(
-                                                label: Text(
-                                              'Remaining Time',
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                              textAlign: TextAlign.center,
-                                            )),
-                                          ],
-                                          rows: List.generate(
-                                              snapshot.data!.length, (index) {
-                                            final name =
-                                                snapshot.data![index].name;
-                                            final time =
-                                                snapshot.data![index].timeLeft;
-                                            return DataRow(cells: [
-                                              DataCell(Text(name)),
-                                              DataCell(Text(time)),
-                                            ]);
-                                          }),
                                         ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  }
                                 } else {
                                   return const Center(
                                     child: CircularProgressIndicator(
@@ -233,6 +257,47 @@ class _NearestStationsState extends State<NearestStations> {
                 }),
           ),
         ),
+      ),
+      bottomNavigationBar:BottomNavigationBar(
+        elevation: 20,
+        type: BottomNavigationBarType.fixed,
+        iconSize: 30,
+        showUnselectedLabels: false,
+        backgroundColor: const Color.fromRGBO(223, 209, 164, 1),
+        unselectedItemColor: const Color.fromRGBO(87, 89, 86, 1),
+        currentIndex: currentIndex,
+        onTap: (ind) {
+          setState(() {
+            currentIndex = ind;
+            if(currentIndex==1)
+            {
+              Navigator.pushReplacement(
+                  context,
+                  Config.route(HomeLayout()));
+            }
+            else if(currentIndex==2)
+            {
+              Navigator.pushReplacement(
+                  context,
+                  Config.route(Profile()));
+            }
+          });
+        },
+        fixedColor: const Color.fromRGBO(87, 89, 86, 0.5),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.view_list_rounded),
+            label: "Menu",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.house),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: "Profile",
+          ),
+        ],
       ),
     );
   }

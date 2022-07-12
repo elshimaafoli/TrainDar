@@ -209,7 +209,7 @@ class _LoginState extends State<Login> {
                                       if (await UserAPI().loginUser(
                                           email.text, password.text)) {
 
-                                        Navigator.push(
+                                        Navigator.pushReplacement(
                                             context,
                                             Config.route(
                                                 HomeLayout()));
@@ -223,14 +223,9 @@ class _LoginState extends State<Login> {
                                                 fontSize: 20,
                                               ),
                                             ),
-                                            duration: Duration(seconds: 2),
-                                            width: double
-                                                .infinity, // Width of the SnackBar.
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  8.0, // Inner padding for SnackBar content.
-                                            ),
-                                            behavior: SnackBarBehavior.floating,
+                                            backgroundColor:  Color.fromRGBO(211, 200, 160, 0.85),
+                                            duration:  Duration(seconds: 5),
+                                            padding:  EdgeInsets.all(10),
                                           ),
                                         );
                                       }

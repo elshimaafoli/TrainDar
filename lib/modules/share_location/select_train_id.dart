@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:traindar_app/apis/TrainIDAPI.dart';
 import 'package:traindar_app/apis/share_location_api.dart';
 import 'package:traindar_app/layout/home_layout.dart';
+import 'package:traindar_app/modules/home/home.dart';
+import 'package:traindar_app/modules/profile/profile.dart';
 import '../../swap.dart';
 
 class SelectTrainID extends StatefulWidget {
@@ -15,6 +17,7 @@ class SelectTrainID extends StatefulWidget {
 
 class _state extends State<SelectTrainID> {
   int? selectedID;
+  int currentIndex = 1;
   static bool _isValidShare = false;
   void setValidShare() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -37,12 +40,12 @@ class _state extends State<SelectTrainID> {
           children: const [
             Icon(
               Icons.share_location,
-              size: 30,
+              size: 25,
             ),
             Text(
               "share your journey",
               style: TextStyle(
-                fontSize: 26,
+                fontSize: 20,
               ),
             ),
           ],
@@ -82,7 +85,8 @@ class _state extends State<SelectTrainID> {
                             maxLines: 2,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -118,10 +122,10 @@ class _state extends State<SelectTrainID> {
                                   ],
                                 ),
                                 alignment: Alignment.bottomCenter,
-                                iconSize: 35,
+                                iconSize:25,
                                 style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black87,
+                                  fontSize: 16,
+                                  color: Colors.black,
                                 ),
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(30)),
@@ -157,6 +161,7 @@ class _state extends State<SelectTrainID> {
                                     //navigate to home layout
                                     setState(() {
                                       _isValidShare = true;
+                                      HomeScreen.trainId=selectedID as int;
                                       setValidShare();
                                     });
                                     Navigator.push(
@@ -193,7 +198,7 @@ class _state extends State<SelectTrainID> {
                                   child: Text(
                                     "Share",
                                     style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize:17,
                                     ),
                                   ),
                                 ),
@@ -218,6 +223,47 @@ class _state extends State<SelectTrainID> {
             ),
           ),
         ),
+      ),
+      bottomNavigationBar:BottomNavigationBar(
+        elevation: 20,
+        type: BottomNavigationBarType.fixed,
+        iconSize: 30,
+        showUnselectedLabels: false,
+        backgroundColor: const Color.fromRGBO(223, 209, 164, 1),
+        unselectedItemColor: const Color.fromRGBO(87, 89, 86, 1),
+        currentIndex: currentIndex,
+        onTap: (ind) {
+          setState(() {
+            currentIndex = ind;
+            if(currentIndex==1)
+            {
+              Navigator.pushReplacement(
+                  context,
+                  Config.route(HomeLayout()));
+            }
+            else if(currentIndex==2)
+            {
+              Navigator.pushReplacement(
+                  context,
+                  Config.route(Profile()));
+            }
+          });
+        },
+        fixedColor: const Color.fromRGBO(87, 89, 86, 0.5),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.view_list_rounded),
+            label: "Menu",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.house),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: "Profile",
+          ),
+        ],
       ),
     );
   }
